@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>事件各种修饰符</title>
+  <link href="./css/monokai-sublime.css" rel="stylesheet">
+</head>
+
+<body>
+  <div id="app">
+    <p>在＠绑定的事件后加小圆点“．”，再跟 个后缀来使用修饰符。</p>
+    <h3>事件修饰符</h3>
+    <ul>
+      <li>.stop</li>
+      <li>.prevent</li>
+      <li>.capture</li>
+      <li>.self</li>
+      <li>.once</li>
+      <li>.passive</li>
+    </ul>
+  </div>
+  <pre>
+    <code class="htmlReplace lang-javascript">
+      <!-- 阻止单击事件继续传播 -->
+      <a v-on:click.stop="doThis"></a>
+
+      <!-- 提交事件不再重载页面 -->
+      <form v-on:submit.prevent="onSubmit"></form>
+
+      <!-- 修饰符可以串联 -->
+      <a v-on:click.stop.prevent="doThat"></a>
+
+      <!-- 只有修饰符 -->
+      <form v-on:submit.prevent></form>
+
+      <!-- 添加事件监听器时使用事件捕获模式 -->
+      <!-- 即元素自身触发的事件先在此处理，然后才交由内部元素进行处理 -->
+      <div v-on:click.capture="doThis">...</div>
+
+      <!-- 只当在 event.target 是当前元素自身时触发处理函数 -->
+      <!-- 即事件不是从内部元素触发的 -->
+      <div v-on:click.self="doThat">...</div>
+    </code>
+  </pre>
+
+  <div id="app">
+    <h3>按键修饰符</h3>
+    <p>为了在必要的情况下支持旧浏览器，Vue 提供了绝大多数常用的按键码的别名：</p>
+    <ul>
+      <li>.enter</li>
+      <li>.tab</li>
+      <li>.delete (捕获“删除”和“退格”键)</li>
+      <li>.esc</li>
+      <li>.space</li>
+      <li>.up</li>
+      <li>.down</li>
+      <li>.left</li>
+      <li>.right</li>
+    </ul>
+    <p>可以通过全局 config.keyCodes 对象自定义按键修饰符别名：</p>
+  </div>
+  <pre>
+    <code class="htmlReplace lang-javascript">
+      // 可以使用 `v-on:keyup.f1`
+      Vue.config.keyCodes.f1 = 112
+    </code>
+  </pre>
+  <h3>系统修饰键</h3>
+  <script src="./js/vue.2.5.16.min.js"></script>
+  <script src="./js/highlight.pack.js"></script>
+
+  <script>
+    document.querySelectorAll('.htmlReplace').forEach((block) => {
+      block.innerHTML = block.innerHTML.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    });
+    hljs.initHighlightingOnLoad();
+    new Vue({
+      el: '#app',
+      data: {
+        isActive: true,
+        isError: false,
+        show: true,
+        color: 'pink',
+        fontSize: 20,
+        styleFont: {
+          fontSize: '20px'
+        },
+        styleColor: {
+          color: 'gray'
+        }
+      },
+      computed: {
+        classesObj() {
+          return {
+            active: this.isActive,
+            error: this.isError,
+            'classesObj': true
+          }
+        },
+        classesArr() {
+          return [{
+              active: this.isActive
+            },
+            'classesArr',
+            this.show ? 'show' : ''
+          ]
+        },
+        styleObj() {
+          return {
+            fontSize: this.fontSize + 'px',
+            background: 'gray',
+            color: this.color
+          }
+        }
+      }
+    })
+  </script>
+</body>
+
+</html>

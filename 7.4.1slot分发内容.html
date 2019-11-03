@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>7.4.1slot分发内容</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="./css/monokai-sublime.css" rel="stylesheet">
+</head>
+<body>
+  <div id="app">
+    <p>父组件模板的所有东西都会在父级作用域内编译；子组件模板的所有东西都会在子级作用域内编译。</p>
+    <p>父级作用域</p>
+    <ul>
+      <c_li v-for="item in books">{{item.name}}--{{item.auther}}</c_li>
+    </ul>
+    <p>子级作用域</p>
+    <ul>
+      <c_li2 v-for="item in books" :item="item"></c_li2>
+    </ul>
+  </div>
+  <pre>
+    <code class="htmlReplace">
+      <div id="app">
+        <p>父组件模板的所有东西都会在父级作用域内编译；子组件模板的所有东西都会在子级作用域内编译。</p>
+        <p>父级作用域</p>
+        <ul>
+          <c_li v-for="item in books">{{item.name}}--{{item.auther}}</c_li>
+        </ul>
+        <p>子级作用域</p>
+        <ul>
+          <c_li2 v-for="item in books" :item="item"></c_li2>
+        </ul>
+      </div>
+    </code>
+  </pre>
+  <pre>
+    <code class="lang-javascript htmlReplace">
+      Vue.component('c_li',{
+        template: `<li>
+          <slot></slot>  
+        </li>`
+      })
+      Vue.component('c_li2',{
+        template: `<li>
+          <slot>{{item.name}}--{{item.auther}}</slot>  
+        </li>`,
+        props:['item']
+      })
+      new Vue({
+        el: '#app',
+        data() {
+          return {
+            books: [
+              {name: 'css', auther: 1},
+              {name: 'html', auther: 2},
+              {name: 'js', auther: 3},
+              {name: 'node', auther: 4}
+            ]
+          }
+        }
+      })
+    </code>
+  </pre>
+  <script src="./js/vue.2.5.16.min.js"></script>
+  <script src="./js/highlight.pack.js"></script>
+  <script>
+    document.querySelectorAll('.htmlReplace').forEach((block) => {
+      block.innerHTML = block.innerHTML.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    });
+    hljs.initHighlightingOnLoad();
+    Vue.component('c_li',{
+      template: `<li>
+        <slot></slot>  
+      </li>`
+    })
+    Vue.component('c_li2',{
+      template: `<li>
+        <slot>{{item.name}}--{{item.auther}}</slot>  
+      </li>`,
+      props:['item']
+    })
+    new Vue({
+      el: '#app',
+      data() {
+        return {
+          books: [{name: 'css', auther: 1},{name: 'html', auther: 2},{name: 'js', auther: 3},{name: 'node', auther: 4}]
+        }
+      }
+    })
+  </script>
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>7.4.4作用域插槽</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="./css/monokai-sublime.css" rel="stylesheet">
+</head>
+<body>
+  <div id="app">
+    <p>提供的组件带有一个可从子组件获取数据的可复用的插槽，作用域插槽也可以具名，重名插槽最后声明的为准</p>
+    <p>使用scope是对组件内部的props进行解构复制，在props多的情况下，提升组件的简洁度</p>
+    <p>在 2.5.0+，slot-scope 不再限制在 <code>template</code> 元素上使用，而可以用在插槽内的任何元素或组件上。</p>
+    <p>接收时,slot数据时,有两种方式一种是:{name}(接收单个key)或props(接收全部)</p>
+    <p>自 2.6.0 起有所更新。已废弃的使用 slot-scope 特性的语法在<a href="https://cn.vuejs.org/v2/guide/components-slots.html#%E5%BA%9F%E5%BC%83%E4%BA%86%E7%9A%84%E8%AF%AD%E6%B3%95">这里</a></p>
+    <p>自 2.6.0 起被废弃。新推荐的语法请查阅<a href="https://cn.vuejs.org/v2/guide/components-slots.html#%E4%BD%9C%E7%94%A8%E5%9F%9F%E6%8F%92%E6%A7%BD">这里</a>。</p>
+    <c-list :lists="books">
+      <template slot-scope="{list}">
+        {{list.name}}
+      </template>
+    </c-list>
+    <hr/>
+    <p>不使用solt-scope,不具名作用域插槽</p>
+    <c-list :lists="books">
+      <template scope="props">
+        {{props.list.name}}
+      </template>
+    </c-list>
+    <hr/>
+    <p>不使用solt-scope,具名作用域插槽</p>
+    <c-list2 :lists="books">
+      <template scope="props">
+        <b v-for='(item, key) in props.data'>{{key + '-' + item}},</b>
+      </template> 
+      <template slot="book" scope="props">
+        {{props.list.name}}
+      </template>
+    </c-list2>
+  </div>
+  <pre>
+    <code class="htmlReplace">
+      <div id="app">
+        <p>提供的组件带有一个可从子组件获取数据的可复用的插槽，作用域插槽也可以具名，重名插槽最后声明的为准</p>
+        <p>使用scope是对组件内部的props进行解构复制，在props多的情况下，提升组件的简洁度</p>
+        <p>在 2.5.0+，slot-scope 不再限制在 <code>template</code> 元素上使用，而可以用在插槽内的任何元素或组件上。</p>
+        <c-list :lists="books">
+          <template slot-scope="{list}">
+            {{list.name}}
+          </template>
+        </c-list>
+        <hr/>
+        <p>不使用solt-scope,不具名作用域插槽</p>
+        <c-list :lists="books">
+          <template scope="props">
+            {{props.list.name}}
+          </template>
+        </c-list>
+        <hr/>
+        <p>不使用solt-scope,具名作用域插槽</p>
+        <c-list2 :lists="books">
+          <template slot="book" scope="props">
+            {{props.list.name}}
+          </template>
+          <template scope="props">
+            <hr/>
+            123
+            <span v-for='(item, key) in props.data'>{{key + '-' + item}},</span>
+          </template> 
+        </c-list2>
+      </div>
+    </code>
+  </pre>
+  <pre>
+    <code class="lang-javascript htmlReplace">
+      new Vue({
+        el: '#app',
+        components:{
+          'c-list': {
+            name: '作用域插槽-接受数据使用slot-scope',
+            template: `
+            <ul>
+              <li v-for="item in lists">
+                <slot :list="item"></slot>
+              </li>
+            </ul>
+            `,
+            props: ['lists']
+          },
+          'c-list2': {
+            name: '作用域插槽-接受数据不使用slot-scope的具名插槽',
+            template: `
+            <ul>
+              <li v-for="item in lists">
+                <slot name="book" :list="item"></slot>
+                <slot :data="item"><slot>
+              </li>
+            </ul>
+            `,
+            props: ['lists']
+          }
+        },
+        data() {
+          return {
+            books: [
+                {name: 'css', auther: 1},
+                {name: 'html', auther: 2},
+                {name: 'js', auther: 3},
+                {name: 'node', auther: 4}
+              ]
+          }
+        }
+      })
+    </code>
+  </pre>
+  <script src="./js/vue.2.5.16.min.js"></script>
+  <script src="./js/highlight.pack.js"></script>
+
+  <script>
+    document.querySelectorAll('.htmlReplace').forEach((block) => {
+      block.innerHTML = block.innerHTML.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    });
+    hljs.initHighlightingOnLoad();
+    new Vue({
+      el: '#app',
+      components:{
+        'c-list': {
+          name: '作用域插槽-接受数据使用slot-scope',
+          template: `
+          <ul>
+            <li v-for="item in lists">
+              <slot :list="item"></slot>
+            </li>
+          </ul>
+          `,
+          props: ['lists']
+        },
+        'c-list2': {
+          name: '作用域插槽-接受数据不使用slot-scope的具名插槽',
+          template: `
+          <ul>
+            <li v-for="item in lists">
+              <slot name="book" :list="item"></slot>
+              <slot :data="item"><slot>
+            </li>
+          </ul>
+          `,
+          props: ['lists']
+        }
+      },
+      data() {
+        return {
+          books: [{name: 'css', auther: 1},{name: 'html', auther: 2},{name: 'js', auther: 3},{name: 'node', auther: 4}]
+        }
+      }
+    })
+  </script>
+</body>
+</html>

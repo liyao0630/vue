@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>7.5.3动态组件</title>
+  <link href="./css/monokai-sublime.css" rel="stylesheet">
+</head>
+
+<body>
+
+  <div id="app" v-cloak>
+    <p>组件对象、实例组件、全局组件都可以，，</p>
+    <ul>
+      <li>组件命名推荐使用小写，使用-号分割</li>
+      <li>组件只能有单个根实例</li>
+      <li>受html限制，比如table内规定只能使用tr、td、th等表格元素，所以在table中直接使用组件是无效的，<br>此时可以使用is特殊属性来挂载组件<br>如果使用字符串模板是不受限制的</li>
+      <li>组件的data必须是一个函数，把数据return出去，<br>js的对象是引用关系，如果return的对象是引用了外部对象，那这个对象就是共享的，任何一方修改都会同步，<br>所以data同时必须return一个新的对象来单独引用</li>
+    </ul>
+    <p></p>
+    <p>全局</p>
+    <test></test>
+    <p>实例组件</p>
+    <hello></hello>
+  </div>
+  <hr>
+  <div id="app1" v-cloak>
+    <p>实例2没有hello组件</p>
+    <p>全局</p>
+    <test></test>
+    <p>实例组件d f s</p>
+    <world></world>
+    <p>对象组件</p>
+    <world></world>
+  </div>
+  <pre>
+    <code class="htmlReplace">
+      <div id="app" v-cloak>
+        <p>组件对象、实例组件、全局组件都可以，，</p>
+        <ul>
+          <li>组件命名推荐使用小写，使用-号分割</li>
+          <li>组件只能有单个根实例</li>
+          <li>受html限制，比如table内规定只能使用tr、td、th等表格元素，所以在table中直接使用组件是无效的，<br>此时可以使用is特殊属性来挂载组件<br>如果使用字符串模板是不受限制的</li>
+          <li>组件的data必须是一个函数，把数据return出去，<br>js的对象是引用关系，如果return的对象是引用了外部对象，那这个对象就是共享的，任何一方修改都会同步，<br>所以data同时必须return一个新的对象来单独引用</li>
+        </ul>
+        <p></p>
+        <p>全局</p>
+        <test></test>
+        <p>实例组件</p>
+        <hello></hello>
+      </div>
+      <hr>
+      <div id="app1" v-cloak>
+        <p>实例2没有hello组件</p>
+        <p>全局</p>
+        <test></test>
+        <p>实例组件</p>
+        <hello></hello>
+        <p>对象组件</p>
+        <world></world>
+      </div>
+    </code>
+  </pre>
+  <pre>
+    <code class="lang-javascript">
+      Vue.component('test', {
+        template: `<div>组件test</div>`
+      })
+      let world = {
+        template: `<div>组件world</div>`
+      }
+      new Vue({
+        el: '#app',
+        components: {
+          hello: {
+            template: `<div>组件hello</div>`
+          }
+        }
+      })
+      new Vue({
+        el: '#app1',
+        components: {
+          world: world
+        }
+      })
+    </code>
+  </pre>
+  <script src="./js/vue.2.5.16.min.js"></script>
+  <script src="./js/highlight.pack.js"></script>
+
+  <script>
+    document.querySelectorAll('.htmlReplace').forEach((block) => {
+      block.innerHTML = block.innerHTML.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    });
+    hljs.initHighlightingOnLoad();
+    Vue.component('test', {
+      template: `
+        <div>组件test</div>
+      `
+    })
+    let world = {
+      template: `
+        <div>组件world</div>
+      `
+    }
+    new Vue({
+      el: '#app',
+      components: {
+        hello: {
+          template: `
+            <div>组件hello</div>
+          `
+        }
+      }
+    })
+    new Vue({
+      el: '#app1',
+      components: {
+        world: world
+      }
+    })
+  </script>
+</body>
+
+</html>

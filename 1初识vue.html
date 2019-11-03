@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>初始vue</title>
+  <link href="./css/monokai-sublime.css" rel="stylesheet">
+</head>
+
+<body>
+  <h3>提供了现代web开发中的常见高级功能：</h3>
+  <ul>
+    <li>解耦视图与数据</li>
+    <li>可复用组件</li>
+    <li>前端路由</li>
+    <li>状态管理</li>
+    <li>虚拟DOM（Virtual DOM）</li>
+  </ul>
+  <p>在传统业务中使用jQuery，视图代码和业务逻辑紧耦合在一起，随着功能的增加，直接操作dom会越来越难以维护；</p>
+  <p>vue使用MVVM的模式拆分视图和数据两部分，将其分离，开发只需关心数据，DOM的事情vue来做</p>
+
+  <h3>vue.js使用了MVVM（model-view-viewModel）模式；</h3>
+  <p>当view（视图层）变化时，会自动更新到viewModel（视图模型），反之亦然。view和viewModel之间通过双向绑定建立联系；</p>
+
+  <h3>可以直接加载vue的CDN文件</h3>
+  <p>自动识别最新版本 https://unpkg.com/vue/dist/vue.min.js</p>
+  <p>指定版本 https://unpkg.com/vue@2.5.16/dist/vue.min.js</p>
+  <div id="app">
+    <p>{{name}}</p>
+    <button @click="changeName">改变name</button>
+    <ul>
+      <li v-for="(item, index) in books" :key="index">{{item}}</li>
+    </ul>
+  </div>
+  <pre>
+    <code class="htmlReplace">
+      <div id="app">
+        <p>{{name}}</p>
+        <button @click="changeName">改变name</button>
+        <ul>
+          <li v-for="(item, index) in books" :key="index">{{item}}</li>
+        </ul>
+      </div>
+    </code>
+  </pre>
+  <pre>
+    <code class="lang-javascript">
+      var app = new Vue({
+        el: '#app',
+        data: {
+          books: ['vue1', 'vue2', 'vue3'],
+          name: 123
+        },
+        created() {
+          console.log('from app created');
+        },
+        methods: {
+          changeName() {
+            this.name = 234
+          }
+        }
+      })
+    </code>
+  </pre>
+
+  <script src="./js/vue.2.5.16.min.js"></script>
+  <script src="./js/highlight.pack.js"></script>
+
+  <script>
+    document.querySelectorAll('.htmlReplace').forEach((block) => {
+      block.innerHTML = block.innerHTML.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    });
+    hljs.initHighlightingOnLoad();
+    var app = new Vue({
+      el: '#app',
+      data: {
+        books: ['vue1', 'vue2', 'vue3'],
+        name: 123
+      },
+      created() {
+        console.log('from app created');
+      },
+      methods: {
+        changeName() {
+          this.name = 234
+        }
+      }
+    })
+  </script>
+</body>
+
+</html>

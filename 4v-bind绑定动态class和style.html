@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>计算器属性</title>
+  <link href="./css/monokai-sublime.css" rel="stylesheet">
+</head>
+
+<body>
+  <div id="app">
+    <p>:class会和正常的class合并，可以是数组和对象</p>
+    <p class="red" :class="{active: isActive, error: isError}">对象</p>
+    <p class="red" :class="classesObj">对象computed属性</p>
+    <p class="red" :class="[{active: isActive}, 'hide']">数组</p>
+    <p class="red" :class="[{active: isActive}, show ? 'show' : '']">数组三目</p>
+    <p class="red" :class="classesArr">数组computed</p>
+    <p>行内:style会和正常的style合并，可以是数组和对象</p>
+    <p style="color:rgb(45, 135, 170)" :style="{background: 'gray',color: this.color}">对象</p>
+    <p style="color:rgb(45, 135, 170)" :style="styleObj">对象computed属性</p>
+    <p style="color:rgb(45, 135, 170)" :style="[styleFont, styleColor]">多个样式对象时可以使用数组</p>
+  </div>
+  <pre>
+    <code class="htmlReplace">
+      <div id="app">
+        <p>:class会和正常的class合并，可以是数组和对象</p>
+        <p class="red" :class="{active: isActive, error: isError}">对象</p>
+        <p class="red" :class="classesObj">对象computed属性</p>
+        <p class="red" :class="[{active: isActive}, 'hide']">数组</p>
+        <p class="red" :class="[{active: isActive}, show ? 'show' : '']">数组三目</p>
+        <p class="red" :class="classesArr">数组computed</p>
+        <p>行内:style会和正常的style合并，可以是数组和对象</p>
+        <p style="color:rgb(45, 135, 170)" :style="{background: 'gray',color: this.color}">对象</p>
+        <p style="color:rgb(45, 135, 170)" :style="styleObj">对象computed属性</p>
+        <p style="color:rgb(45, 135, 170)" :style="[styleFont, styleColor]">多个样式对象时可以使用数组</p>
+      </div>
+    </code>
+  </pre>
+  <pre>
+    <code class="lang-javascript">
+      new Vue({
+        el: '#app',
+        data: {
+          isActive: true,
+          isError: false,
+          show: true,
+          color: 'pink',
+          fontSize: 20,
+          styleFont: {
+            fontSize: '20px'
+          },
+          styleColor: {
+            color: 'gray'
+          }
+        },
+        computed: {
+          classesObj() {
+            return {
+              active: this.isActive,
+              error: this.isError,
+              'classesObj': true
+            }
+          },
+          classesArr() {
+            return [{
+                active: this.isActive
+              },
+              'classesArr',
+              this.show ? 'show' : ''
+            ]
+          },
+          styleObj() {
+            return {
+              fontSize: this.fontSize + 'px',
+              background: 'gray',
+              color: this.color
+            }
+          }
+        }
+      })
+    </code>
+  </pre>
+  <script src="./js/vue.2.5.16.min.js"></script>
+  <script src="./js/highlight.pack.js"></script>
+
+  <script>
+    document.querySelectorAll('.htmlReplace').forEach((block) => {
+      block.innerHTML = block.innerHTML.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    });
+    hljs.initHighlightingOnLoad();
+    new Vue({
+      el: '#app',
+      data: {
+        isActive: true,
+        isError: false,
+        show: true,
+        color: 'pink',
+        fontSize: 20,
+        styleFont: {
+          fontSize: '20px'
+        },
+        styleColor: {
+          color: 'gray'
+        }
+      },
+      computed: {
+        classesObj() {
+          return {
+            active: this.isActive,
+            error: this.isError,
+            'classesObj': true
+          }
+        },
+        classesArr() {
+          return [{
+              active: this.isActive
+            },
+            'classesArr',
+            this.show ? 'show' : ''
+          ]
+        },
+        styleObj() {
+          return {
+            fontSize: this.fontSize + 'px',
+            background: 'gray',
+            color: this.color
+          }
+        }
+      }
+    })
+  </script>
+</body>
+
+</html>

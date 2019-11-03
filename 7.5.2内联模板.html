@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>7.5.2内联模板</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    [v-cloak]{
+      display: none
+    }
+  </style>
+</head>
+<body>
+
+  <div id="app" v-cloak>
+    <p>组件的模板一般都是在template选项内定义，vue提供了内联模板的功能，在使用时，给组件标签使用inline-template特性，组件就会把它的内容当做模板，而不是把它的内用当做slot的内容分发</p>
+    <test inline-template>
+      <div>
+          <h2>在父组件定义子组件的模板</h2>
+          <p>{{message}}</p>
+          {{msg}}
+      </div>
+    </test>
+  </div>
+  <script src="https://unpkg.com/vue/dist/vue.min.js"></script>
+  <script>
+    Vue.component('test',{
+      name: 'test',
+      data() {
+        return {
+          msg: '子组件数据'
+        }
+      },
+      template: `
+        <ul>
+          <li v-for="item in books">
+            {{item.auther}}
+            <c-ul :books="item.children" v-if="item.children"></c-ul>
+          </li>
+        <ul>
+      `
+    })
+    new Vue({
+      el: '#app',
+      data() {
+        return {
+          message: '父组件数据'
+        }
+      }
+    })
+  </script>
+</body>
+</html>

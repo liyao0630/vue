@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>7.6.3手动挂载实例</title>
+</head>
+
+<body>
+  <h3>动态创建实例，手动挂载实例</h3>
+  <ul>
+    <li>大多数情况实例通过new Vue()创建，特殊情况需要动态的创建vue实例，</li>
+    <li>vue提供了Vue.extend和$mount两个方法来手动挂载一个实例</li>
+    <li>Vue.extend是基础Vue构造器，创建一个“子类”，参数时一个包含组件选项的对象，返回的是“子类”对象</li>
+    <li>vue实例在实例化时没有收到el选项，它就处于“未挂载”状态，没有关联的DOM元素</li>
+    <li>可以使用$mount()手动挂载一个未挂载的实例，参数时，el。此方法返回实例自身，因此可以链式调用其他实例方法</li>
+  </ul>
+  <h4>例：</h4>
+  <div id="app"></div>
+  <hr>
+  <h3>挂载后注意</h3>
+  <ul>
+    <li>实例的#app2元素会被整个test2组件的template的内容</li>
+    <li>或者在文档之外渲染，随后挂载，操作dom进行appendChild</li>
+  </ul>
+  <h4>例：</h4>
+  <div id="app2"></div>
+  <hr>
+  <ul>
+    <li>此外，el可以放入extend方法的参数对象{el:'#app'}(例1)，也可以new test().$mount('#app2')(例2)</li>
+  </ul>
+  <link href="./css/monokai-sublime.css" rel="stylesheet">
+  <pre>
+    <code class="htmlReplace">
+      <div id="app"></div>
+      <div id="app2"></div>
+    </code>
+  </pre>
+  <pre>
+    <code class="lang-javascript">
+      // 例1
+      var test = Vue.extend({
+        el: '#app',
+        template: `<div>hello: {{ msg }}</div>`,
+        data() {
+          return {
+            msg: 'world'
+          }
+        }
+      })
+      new test().$mount()
+      // 例2
+      var test2 = Vue.extend({
+        template: `<div>hello: {{ msg }}</div>`,
+        data() {
+          return {
+            msg: 'world'
+          }
+        }
+      })
+      var component = new test().$mount('#app2')
+      document.querySelector('#app2').appendChild(component.$el)
+    </code>
+  </pre>
+  <script src="./js/vue.2.5.16.min.js"></script>
+  <script src="./js/highlight.pack.js"></script>
+  <script>
+    document.querySelectorAll('.htmlReplace').forEach((block) => {
+      block.innerHTML = block.innerHTML.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    });
+    hljs.initHighlightingOnLoad();
+    // 例1
+    var test = Vue.extend({
+      el: '#app',
+      template: `<div>hello: {{ msg }}</div>`,
+      data() {
+        return {
+          msg: 'world'
+        }
+      }
+    })
+    new test().$mount()
+    // 例2
+    var test2 = Vue.extend({
+      template: `<div>hello: {{ msg }}</div>`,
+      data() {
+        return {
+          msg: 'world'
+        }
+      }
+    })
+    var component = new test().$mount('#app2')
+    document.querySelector('#app2').appendChild(component.$el)
+    console.log(component.$el)
+  </script>
+</body>
+
+</html>

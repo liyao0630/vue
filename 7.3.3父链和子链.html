@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>7.3.3父链和子链</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="./css/monokai-sublime.css" rel="stylesheet">
+  
+</head>
+<body>
+  <div id="app">
+    {{text}}
+    <button @click="changeChildrenAge" ref="button">父链</button>
+    <hr/>
+    <test-a ref="test_a"></test-a>
+    <test-b :text="porpText"></test-b>
+  </div>
+  <pre>
+    <code class="htmlReplace">
+      <div id="app">
+        {{text}}
+        <button @click="changeChildrenAge" ref="button">父链</button>
+        <hr/>
+        <test-a ref="test_a"></test-a>
+        <test-b :text="porpText"></test-b>
+      </div>
+    </code>
+  </pre>
+  <pre>
+    <code class="lang-javascript htmlReplace">
+      Vue.component('test-a',{
+        name: 'test-a',
+        template: `<div>
+          {{text}}
+          <button @click="changeParentAge">test-a</button>
+          <test-b text="test-b改变test-a"></test-b>
+        </div>`,
+        data() {
+          return {
+            name: 'test-a',
+            text: 'test-a'
+          }
+        },
+        methods: {
+          changeParentAge() {
+            this.$parent.text = 'test-a改变parent'
+            console.log(this.$parent.name)
+          }
+        }
+      })
+      
+      Vue.component('test-b',{
+        name: 'test-b',
+        template: `<div>
+          <button @click="changeParentAge(text)">test-b</button>
+          {{text}}
+        </div>`,
+        props: ['text'],
+        data() {
+          return {
+            name: 'test-b',
+            text: 'test-b'
+          }
+        },
+        methods: {
+          changeParentAge(text) {
+            this.$parent.text = text
+            console.log(this.$parent.name)
+          }
+        }
+      })
+      new Vue({
+        el: '#app',
+        name: 'app',
+        components: ['test-a'],
+        data() {
+          return {
+            name: 'app',
+            text: '默认值',
+            porpText: 'test-b改变parent'
+          }
+        },
+        mounted() {
+          console.log(this.$refs.button);
+          console.log(this.$refs.test_a);
+        },
+        methods: {
+          changeChildrenAge() {
+            this.$children.map(val => {
+              if (val.name === 'test-a') {
+                val.text = '父级改变test-a'
+              }
+              console.log(val.name);
+            })
+          }
+        }
+      })
+    </code>
+  </pre>
+  <script src="./js/vue.2.5.16.min.js"></script>
+  <script src="./js/highlight.pack.js"></script>
+
+  <script>
+    document.querySelectorAll('.htmlReplace').forEach((block) => {
+      block.innerHTML = block.innerHTML.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    });
+    hljs.initHighlightingOnLoad();
+
+    Vue.component('test-a',{
+      name: 'test-a',
+      template: `<div>
+        {{text}}
+        <button @click="changeParentAge">test-a</button>
+        <test-b text="test-b改变test-a"></test-b>
+        <hr/>
+      </div>`,
+      data() {
+        return {
+          name: 'test-a',
+          text: 'test-a'
+        }
+      },
+      methods: {
+        changeParentAge() {
+          this.$parent.text = 'test-a改变parent'
+          console.log(this.$parent.name)
+        }
+      }
+    })
+
+    Vue.component('test-b',{
+      name: 'test-b',
+      template: `<div>
+        <button @click="changeParentAge(text)">test-b</button>
+        {{text}}
+        <hr/>
+      </div>`,
+      props: ['text'],
+      data() {
+        return {
+          name: 'test-b',
+          text: 'test-b'
+        }
+      },
+      methods: {
+        changeParentAge(text) {
+          this.$parent.text = text
+          console.log(this.$parent.name)
+        }
+      }
+    })
+    new Vue({
+      el: '#app',
+      name: 'app',
+      components: ['test-a'],
+      data() {
+        return {
+          name: 'app',
+          text: '默认值',
+          porpText: 'test-b改变parent'
+        }
+      },
+      mounted() {
+        console.log(this.$refs.button);
+        console.log(this.$refs.test_a);
+      },
+      methods: {
+        changeChildrenAge() {
+          this.$children.map(val => {
+            if (val.name === 'test-a') {
+              val.text = '父级改变test-a'
+            }
+            console.log(val.name);
+          })
+        }
+      }
+    })
+  </script>
+</body>
+</html>
