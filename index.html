@@ -18,6 +18,9 @@
     #catalog{
       width:20%
     }
+    .activeLi {
+      color:dimgrey;
+    }
   </style>
 </head>
 <body>
@@ -43,6 +46,10 @@
     elCatalog.innerHTML = list.join('');
     function changeSrc(index){
       var title = event.target.innerHTML;
+      event.target.parentNode.querySelectorAll('li').forEach(element => {
+        element.setAttribute('class', '')
+      });
+      event.target.setAttribute('class', 'activeLi')
       document.title = title + '-vue实战'
       sessionStorage.setItem('url', catalog[index].name)
       content.src = catalog[index].name +'.html'

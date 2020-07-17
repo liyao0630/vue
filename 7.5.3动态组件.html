@@ -18,7 +18,7 @@
   <div id="app" v-cloak>
     <p>特殊元素component用来动态的挂载不同的组件，使用is特性来选择要挂载的组件,组件对象、实例组件、全局组件都可以</p>
     <p>但是 使用组件对象时候，要正确引用对象，而不能是字符串名字</p>
-    <p>以下dome的world就是组件对象，只有第一次渲染正确</p>
+    <p>以下demo的world就是组件对象，只有第一次渲染正确</p>
     <component :is="name"></component>
     <button @click="handleView('world')">world</button>
     <button @click="handleView('hello')">hello</button>
@@ -53,7 +53,7 @@
       methods: {
         handleView(name) {
           this.name = name
-          console.log(this.namethis.name);
+          console.log(this.name);
         }
       }
     })
