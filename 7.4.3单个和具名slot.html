@@ -2,110 +2,304 @@
 <html>
 
 <head>
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>7.4.3单个和具名slot</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="./css/monokai-sublime.css" rel="stylesheet">
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>7.4.3单个和具名slot</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="./css/monokai-sublime.css" rel="stylesheet">
 </head>
 
 <body>
-  <div id="app">
-    <p>单个</p>
-    <c-div>
-      <div>
-        content
-      </div>
-    </c-div>
-    <hr>
-    <p>具名</p>
-    <c_div2>
-      <div slot="header">
-        header
-      </div>
-      <div>
-        content
-      </div>
-      <div slot="foolter">
-        footer
-      </div>
-    </c_div2>
-  </div>
-  <pre>
-      <code class="htmlReplace">
-        <div id="app">
-          <p>单个</p>
-          <c-div>
-            <div>
-              content
+
+    <p>在 2.5.0+，`slot-scope` 不再限制在 `template` 元素上使用，而可以用在插槽内的任何元素或组件上</p>
+    <p>2.6.0+, `v-slot` 只能添加在一个`template` 上 。</p>
+    <p>2.6.0+, 只有一种例外情况,当被提供的内容,只有默认插槽时，组件的标签可以被当作插槽的模板来使用。可以把 `v-slot` 直接用在组件上</p>
+    <p>作用域插槽，让插槽内容能够访问子组件中的数据。通过绑定在 slot 元素上的进行传递，这些特性被称为插槽 `prop`。</p>
+    <p>插槽 `prop`为一个对象，在插槽内容访问时2.5.0+ 和2.6.0+ 上有所区别。</p>
+    <p>作用域插槽的内部工作原理是：将插槽内容包括在一个传入单个参数(对象)的函数。`v-slot` 的值实际上可以是任何能够作为函数定义中的参数的 JavaScript 表达式。可以使用 [ES2015 解构]来传入具体的插槽 prop
+    </p>
+    <p>2.6.0+, 具名插槽支持缩写#slotName，和其它指令一样，该缩写只在其有参数的时候才可用。例如`#="{user}"`是无效的需要为`#default="{user}"`</p>
+
+    <div id="app">
+        <slot-div>
+            <!-- 2.5.0+ -->
+            <p slot="header">
+                header
+            </p>
+
+            <!-- 2.5.0+作用域插槽 -->
+            <div slot="aside" slot-scope="{value}">
+                aside {{value}}
             </div>
-          </c-div>
-          <hr>
-          <p>具名</p>
-          <c_div2>
-            <div slot="header">
-              header
-            </div>
-            <div>
-              content
-            </div>
-            <div slot="foolter">
-              footer
-            </div>
-          </c_div2>
-        </div>
-      </code>
-    </pre>
+
+            <!-- 2.6.0+ -->
+            <template v-slot:default>
+                <p>content</p>
+            </template>
+
+            <!-- 2.6.0+作用域插槽,简写 -->
+            <template #footer="{value}">
+                <p>footer {{value}}</p>
+            </template>
+
+        </slot-div>
+
+        <!-- 组件的标签,当作插槽的模板 -->
+        <!-- slotProps接收插槽prop的命名，可任意命名 -->
+        <component-slot v-slot:default="slotProps">
+            {{slotProps.value}}
+        </component-slot>
+
+        <!-- 动态插槽 -->
+        <!-- dynamicSlotName会转换为纯小写字母的key -->
+        <dynamic-slot>
+            <template v-slot:[dynamicSlotName]>
+                dynamic-content
+            </template>
+        </dynamic-slot>
+
+        <!-- 实例 -->
+        <self-list>
+            <li v-for="(item, i) in book" :key="i">
+                {{item.author}}--{{item.name}}
+            </li>
+        </self-list>
+        <self-list :list="book">
+        </self-list>
+
+    </div>
     <pre>
-      <code class="lang-javascript htmlReplace">
-        Vue.component('cDiv', {
-          template: `
-            <div>
-              <slot></slot>
-            </div>
-          `
-        })
-        Vue.component('c_div2', {
-          template: `
-            <div>
-              <slot name="header"></slot>
-              <slot></slot>
-              <slot name="foolter"></slot>
-            </div>
-          `
-        })
-        new Vue({
-          el: '#app'
-        })
-      </code>
+        <code class="htmlReplace">
+<div id="app">
+    <slot-div>
+        <!-- 2.5.0+ -->
+        <p slot="header">
+            header
+        </p>
+
+        <!-- 2.5.0+作用域插槽 -->
+        <div slot="aside" slot-scope="{value}">
+            aside {{value}}
+        </div>
+
+        <!-- 2.6.0+ -->
+        <template v-slot:default>
+            <p>content</p>
+        </template>
+
+        <!-- 2.6.0+作用域插槽,简写 -->
+        <template #footer="{value}">
+            <p>footer {{value}}</p>
+        </template>
+
+    </slot-div>
+
+    <!-- 组件的标签,当作插槽的模板 -->
+    <!-- slotProps接收插槽prop的命名，可任意命名 -->
+    <component-slot v-slot:default="slotProps">
+        {{slotProps.value}}
+    </component-slot>
+
+    <!-- 动态插槽 -->
+    <!-- dynamicSlotName会转换为纯小写字母的key -->
+    <dynamic-slot>
+        <template v-slot:[dynamicSlotName]>
+            dynamic-content
+        </template>
+    </dynamic-slot>
+
+    <!-- 实例 -->
+    <self-list>
+        <li v-for="(item, i) in book" :key="i">
+            {{item.author}}--{{item.name}}
+        </li>
+    </self-list>
+    <self-list :list="book">
+    </self-list>
+</div>
+        </code>
     </pre>
-  <script src="./js/vue.2.5.16.min.js"></script>
-  <script src="./js/highlight.pack.js"></script>
-  <script>
-    document.querySelectorAll('.htmlReplace').forEach((block) => {
-      block.innerHTML = block.innerHTML.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
-    });
-    hljs.initHighlightingOnLoad();
-    Vue.component('cDiv', {
-      template: `
+
+    <pre>
+        <code class="lang-javascript htmlReplace">
+Vue.component('dynamic-slot', {
+    template: `
         <div>
-          <slot></slot>
+            <slot name="header">
+            header  
+            </slot>
+            <slot>
+            default
+            </slot>
+            <slot name="footer">footer</slot>
         </div>
-      `
-    })
-    Vue.component('c_div2', {
-      template: `
+    `
+})
+
+Vue.component('slot-div', {
+    data() {
+        return {
+            value: 100
+        }
+    },
+    template: `
         <div>
-          <slot name="header"></slot>
-          <slot></slot>
-          <slot name="foolter"></slot>
+            <slot name="header"></slot>
+            <slot name="aside" :value="value"></slot>
+            <slot></slot>
+            <slot name="footer" :value="value"></slot>
         </div>
-      `
-    })
-    new Vue({
-      el: '#app'
-    })
-  </script>
+    `
+})
+
+// 当被提供的内容,只有默认插槽时，组件的标签可以被当作插槽的模板来使用。
+// 可以把 v-slot 直接用在组件上。
+Vue.component('component-slot', {
+    data() {
+        return {
+            value: 200
+        }
+    },
+    template: `
+        <div>
+        <slot :value="value"></slot>
+        </div>
+    `
+})
+
+Vue.component('self-li', {
+    props: {
+        name: String,
+        author: String
+    },
+    template: `
+        <li>{{name}}---{{author}}</li>
+    `
+})
+
+Vue.component('self-list', {
+props: {
+    list: Array
+},
+template: `
+    <ul>
+        <slot>
+            <self-li v-for="(item, i) in list" :name="item.name" :author="item.author" :key="i"></self-li>
+        </slot>
+    </ul>
+`,
+})
+
+new Vue({
+    el: '#app',
+    data: {
+        dynamicslotname: 'footer',
+        book: [{
+            name: 'javascript',
+            author: '1'
+        }, {
+            name: 'vue',
+            author: '2'
+        }, {
+            name: 'node',
+            author: '3'
+        }]
+    }
+})
+        </code>
+    </pre>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.0"></script>
+    <script src="./js/highlight.pack.js"></script>
+    <script>
+        document.querySelectorAll('.htmlReplace').forEach((block) => {
+            block.innerHTML = block.innerHTML.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+        });
+        hljs.initHighlightingOnLoad();
+        Vue.component('dynamic-slot', {
+            template: `
+                <div>
+                <slot name="header">
+                    header  
+                </slot>
+                <slot>
+                    default
+                    </slot>
+                <slot name="footer">footer</slot>
+                </div>
+            `
+        })
+        Vue.component('slot-div', {
+            data() {
+                return {
+                    value: 100
+                }
+            },
+            template: `
+            <div>
+                <slot name="header"></slot>
+                <slot name="aside" :value="value"></slot>
+                <slot></slot>
+                <slot name="footer" :value="value"></slot>
+            </div>
+        `
+        })
+
+        // 当被提供的内容,只有默认插槽时，组件的标签可以被当作插槽的模板来使用。
+        // 可以把 v-slot 直接用在组件上。
+        Vue.component('component-slot', {
+            data() {
+                return {
+                    value: 200
+                }
+            },
+            template: `
+                <div>
+                    <slot :value="value"></slot>
+                </div>
+            `
+        })
+
+        Vue.component('self-li', {
+            props: {
+                name: String,
+                author: String
+            },
+            template: `
+                <li>{{name}}---{{author}}</li>
+            `
+        })
+
+        Vue.component('self-list', {
+            props: {
+                list: Array
+            },
+            template: `
+                <ul>
+                    <slot>
+                    <self-li v-for="(item, i) in list" :name="item.name" :author="item.author" :key="i"></self-li>
+                    </slot>
+                </ul>
+            `
+        })
+
+        new Vue({
+            el: '#app',
+            data: {
+                dynamicslotname: 'footer',
+                book: [{
+                    name: 'javascript',
+                    author: '1'
+                }, {
+                    name: 'vue',
+                    author: '2'
+                }, {
+                    name: 'node',
+                    author: '3'
+                }]
+            }
+        })
+    </script>
 </body>
 
 </html>

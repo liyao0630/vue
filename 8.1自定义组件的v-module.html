@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title></title>
+</head>
+
+<body>
+    <div id="app">
+        <base-input v-model="title.msg" :gmsg="title.msg"></base-input>
+        <base-input v-model="title.msg1" :gmsg="title.msg1"></base-input>
+        <base-input-sync v-model="msg3" :msg3="msg3"></base-input-sync>
+        {{title.msg}} {{title.msg1}} {{msg3}}
+        <base-checkbox></base-checkbox>
+        <base-checkbox></base-checkbox>
+    </div>
+    <script src="./js/vue.2.5.16.min.js"></script>
+    <script src="./js/highlight.pack.js"></script>
+    <script>
+        Vue.component('base-input-sync', {
+            props: {
+                msg3: String
+            },
+            template: `<div>
+                <input
+                type="text"
+                v-bind:value="msg3"
+                v-on:input="$emit('input', $event.target.value)"
+              > 
+            </div>`,
+        })
+        Vue.component('base-input', {
+            model: {
+                prop: 'value',
+                event: 'input'
+            },
+            props: {
+                gmsg: String
+            },
+            template: `<div>
+                <input
+                type="text"
+                v-bind:value="gmsg"
+                v-on:input="$emit('input', $event.target.value)"
+              > 
+            </div>`,
+        })
+        Vue.component('base-checkbox', {
+            model: {
+                prop: 'checked',
+                event: 'change'
+            },
+            props: {
+                checked: Boolean
+            },
+            template: `
+              <input
+                type="checkbox"
+                v-bind:checked="checked"
+                v-on:change="$emit('change', $event.target.checked)"
+              >
+            `
+        })
+        new Vue({
+            el: '#app',
+            data() {
+                return {
+                    title: {
+                        msg: 'msg',
+                        msg1: 'msg1'
+                    },
+                    title2: {
+                        msg: 'msg'
+                    },
+                    msg3: 'msg3'
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
