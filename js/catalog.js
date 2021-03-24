@@ -16,5 +16,7 @@ let catalog = [
   {name: "7.5.3动态组件"},
   {name: "7.6.1$nextTick和异步队列更新"},
   {name: "7.6.2x-template"},
-  {name: "7.6.3手动挂载实例"}
+  {name: "7.6.3手动挂载实例"},
+  {name: "8.1自定义组件的v-module"},
+  {name: "9.插件"}
 ]
