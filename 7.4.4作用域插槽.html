@@ -15,8 +15,8 @@
         <p>使用scope是对组件内部的props进行解构复制，在props多的情况下，提升组件的简洁度</p>
         <p>在 2.5.0+，slot-scope 不再限制在 <code>template</code> 元素上使用，而可以用在插槽内的任何元素或组件上。</p>
         <p>接收时,slot数据时,有两种方式一种是:{name}(接收单个key)或props(接收全部)</p>
-        <p>自 2.6.0 起有所更新。已废弃的使用 slot-scope 特性的语法在<a href="https://cn.vuejs.org/v2/guide/components-slots.html#%E5%BA%9F%E5%BC%83%E4%BA%86%E7%9A%84%E8%AF%AD%E6%B3%95">这里</a></p>
-        <p>自 2.6.0 起被废弃。新推荐的语法请查阅<a href="https://cn.vuejs.org/v2/guide/components-slots.html#%E4%BD%9C%E7%94%A8%E5%9F%9F%E6%8F%92%E6%A7%BD">这里</a>。</p>
+        <p>自 2.6.0 起有所更新。已废弃的使用 slot-scope 特性的语法在<a href="https://cn.vuejs.org/guide/components/slots.html#scoped-slots">这里</a></p>
+        <p>自 2.6.0 起被废弃。新推荐的语法请查阅<a href="https://cn.vuejs.org/guide/components/slots.html#scoped-slots">这里</a>。</p>
         <c-list :lists="books">
             <template slot-scope="{list}">
             {{list.name}}

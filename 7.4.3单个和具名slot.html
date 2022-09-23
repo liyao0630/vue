@@ -44,14 +44,14 @@
 
         </slot-div>
 
-        <!-- 组件的标签,当作插槽的模板 -->
-        <!-- slotProps接收插槽prop的命名，可任意命名 -->
+        <p>组件的标签,当作插槽的模板</p>
+        <!-- slotProps接收插槽props对象的命名，可任意命名 -->
         <component-slot v-slot:default="slotProps">
             {{slotProps.value}}
         </component-slot>
 
-        <!-- 动态插槽 -->
-        <!-- dynamicSlotName会转换为纯小写字母的key -->
+        <p>动态插槽-dynamicSlotName会转换为纯小写字母的key</p>
+       
         <dynamic-slot>
             <template v-slot:[dynamicSlotName]>
                 dynamic-content
@@ -95,7 +95,7 @@
     </slot-div>
 
     <!-- 组件的标签,当作插槽的模板 -->
-    <!-- slotProps接收插槽prop的命名，可任意命名 -->
+    <!-- slotProps接收插槽props对象的命名，可任意命名 -->
     <component-slot v-slot:default="slotProps">
         {{slotProps.value}}
     </component-slot>

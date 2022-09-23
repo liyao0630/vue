@@ -14,6 +14,10 @@
     <ul>
       <c_li v-for="item in books">{{item.name}}--{{item.auther}}</c_li>
     </ul>
+    <p>父级作用域-slot默认内容</p>
+    <ul>
+      <c_li v-for="item in books"></c_li>
+    </ul>
     <p>子级作用域</p>
     <ul>
       <c_li2 v-for="item in books" :item="item"></c_li2>
@@ -71,7 +75,7 @@
     hljs.initHighlightingOnLoad();
     Vue.component('c_li',{
       template: `<li>
-        <slot></slot>  
+        <slot>默认内容</slot>  
       </li>`
     })
     Vue.component('c_li2',{
